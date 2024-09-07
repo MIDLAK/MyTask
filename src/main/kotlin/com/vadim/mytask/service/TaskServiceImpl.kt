@@ -2,6 +2,7 @@ package com.vadim.mytask.service
 
 import com.vadim.mytask.dto.Task
 import com.vadim.mytask.entity.TaskEntity
+import com.vadim.mytask.exception.TaskNotFoundException
 import com.vadim.mytask.repository.TaskRepository
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
@@ -19,7 +20,7 @@ class TaskServiceImpl(
 
     @Transactional
     override fun update(id: Int, task: Task) {
-        val updatedTask = taskRepository.findByIdOrNull(id = id) ?: throw RuntimeException("task not found")
+        val updatedTask = taskRepository.findByIdOrNull(id = id) ?: throw TaskNotFoundException(id)
 
         updatedTask.title = task.title
         updatedTask.description = task.description
@@ -32,11 +33,11 @@ class TaskServiceImpl(
     }
 
     override fun getById(id: Int): Task =
-        taskRepository.findByIdOrNull(id)?.toDto() ?: throw RuntimeException("task not found")
+        taskRepository.findByIdOrNull(id)?.toDto() ?: throw TaskNotFoundException(id)
 
     @Transactional
     override fun delete(id: Int) {
-        val deletingTask = taskRepository.findByIdOrNull(id) ?: throw RuntimeException("task not found")
+        val deletingTask = taskRepository.findByIdOrNull(id) ?: throw TaskNotFoundException(id)
         taskRepository.deleteById(deletingTask.id)
     }
 
