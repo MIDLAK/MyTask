@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 class PriorityServiceImpl(
     private val priorityRepository: PriorityRepository
 ) : PriorityService {
-    override fun getAll(): List<Priority> = priorityRepository.findAll().map { it.toDto() }
+    override fun getAll(): List<Priority> = priorityRepository.findByOrderByPlevelDesc().map { it.toDto() }
 
     private fun PriorityEntity.toDto(): Priority = Priority(
         id = this.id,
