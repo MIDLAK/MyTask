@@ -5,6 +5,7 @@ import com.vadim.mytask.dto.Task
 import com.vadim.mytask.entity.TagEntity
 import com.vadim.mytask.entity.TaskEntity
 import com.vadim.mytask.repository.TagRepository
+import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -15,19 +16,23 @@ class TagServiceImpl(
     override fun getById(id: Int): Tag =
         tagRepository.findByIdOrNull(id)?.toDto() ?: throw RuntimeException("tag not found")
 
+    @Transactional
     override fun create(tag: Tag): Int {
         val tagEntity = tagRepository.save(tag.toEntity())
         return tagEntity.id
     }
 
+    @Transactional
     override fun update(id: Int, tag: Tag) {
         val updatedTag = tagRepository.findByIdOrNull(id = id) ?: throw RuntimeException("tag not found")
         updatedTag.name = tag.name
         tagRepository.save(updatedTag)
     }
 
+    @Transactional
     override fun delete(id: Int) {
-        TODO("Not yet implemented")
+        val deletedTag = tagRepository.findByIdOrNull(id = id) ?: throw RuntimeException("tag not found")
+        tagRepository.deleteById(deletedTag.id)
     }
 
     private fun Tag.toEntity(): TagEntity = TagEntity(id = 0, name = this.name)

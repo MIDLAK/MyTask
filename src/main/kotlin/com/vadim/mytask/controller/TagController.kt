@@ -2,6 +2,7 @@ package com.vadim.mytask.controller
 
 import com.vadim.mytask.dto.Tag
 import com.vadim.mytask.service.TagService
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -23,4 +24,7 @@ class TagController(
 
     @PutMapping
     fun update(@PathVariable("id") id: Int, @RequestBody tag: Tag) = tagService.update(id = id, tag = tag)
+
+    @DeleteMapping
+    fun delete(@PathVariable("id") id: Int) = tagService.delete(id = id)
 }
