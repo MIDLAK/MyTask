@@ -1,5 +1,9 @@
 package com.vadim.mytask.dto
 
+import com.vadim.mytask.entity.PriorityEntity
+import com.vadim.mytask.entity.TaskEntity
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import java.time.LocalDateTime
 
 data class Task(
@@ -12,5 +16,17 @@ data class Task(
     val deletedDate: LocalDateTime? = null,
 
     val statusId: Int? = null,
-    val priorityId: Int? = null,
-)
+    val priority: Priority
+) {
+    fun toEntity(): TaskEntity = TaskEntity(
+        id = 0,
+        title = this.title,
+        description = this.description,
+        dueDate = this.dueDate,
+        createdDate = this.createdDate,
+        updatedDate = this.updatedDate,
+        deletedDate = this.deletedDate,
+        statusId = this.statusId,
+        priority = this.priority.toEntity()
+    )
+}

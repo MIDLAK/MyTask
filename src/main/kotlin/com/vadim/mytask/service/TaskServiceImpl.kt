@@ -2,7 +2,9 @@ package com.vadim.mytask.service
 
 import com.vadim.mytask.dto.Task
 import com.vadim.mytask.entity.TaskEntity
+import com.vadim.mytask.exception.PriorityNotFoundException
 import com.vadim.mytask.exception.TaskNotFoundException
+import com.vadim.mytask.repository.PriorityRepository
 import com.vadim.mytask.repository.TaskRepository
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
@@ -10,10 +12,12 @@ import org.springframework.stereotype.Service
 
 @Service
 class TaskServiceImpl(
-    private val taskRepository: TaskRepository
+    private val taskRepository: TaskRepository,
+    private val priorityRepository: PriorityRepository
 ): TaskService {
     @Transactional
     override fun create(task: Task): Int {
+        priorityRepository.findByIdOrNull(task.priority.id) ?: throw PriorityNotFoundException(task.priority.id)
         val taskEntity = taskRepository.save(task.toEntity())
         return taskEntity.id
     }
@@ -28,6 +32,11 @@ class TaskServiceImpl(
         updatedTask.createdDate = task.createdDate
         updatedTask.updatedDate = task.updatedDate
         updatedTask.deletedDate = task.deletedDate
+        updatedTask.statusId = task.statusId
+
+        val priorityEntity =
+            priorityRepository.findByIdOrNull(task.priority.id) ?: throw PriorityNotFoundException(task.priority.id)
+        updatedTask.priority = priorityEntity
 
         taskRepository.save(updatedTask)
     }
@@ -40,29 +49,4 @@ class TaskServiceImpl(
         val deletingTask = taskRepository.findByIdOrNull(id) ?: throw TaskNotFoundException(id)
         taskRepository.deleteById(deletingTask.id)
     }
-
-    private fun Task.toEntity(): TaskEntity = TaskEntity(
-        id = 0,
-        title = this.title,
-        description = this.description,
-        dueDate = this.dueDate,
-        createdDate = this.createdDate,
-        updatedDate = this.updatedDate,
-        deletedDate = this.deletedDate,
-        statusId = this.statusId,
-        priorityId = this.priorityId
-    )
-
-
-    private fun TaskEntity.toDto(): Task = Task(
-        id = this.id,
-        title = this.title,
-        description = this.description,
-        dueDate = this.dueDate,
-        createdDate = this.createdDate,
-        updatedDate = this.updatedDate,
-        deletedDate = this.deletedDate,
-        statusId = this.statusId,
-        priorityId = this.priorityId
-    )
 }

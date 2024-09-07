@@ -10,10 +10,4 @@ class PriorityServiceImpl(
     private val priorityRepository: PriorityRepository
 ) : PriorityService {
     override fun getAll(): List<Priority> = priorityRepository.findByOrderByPlevelDesc().map { it.toDto() }
-
-    private fun PriorityEntity.toDto(): Priority = Priority(
-        id = this.id,
-        name = this.name,
-        plevel = this.plevel ?: 0
-    )
 }

@@ -1,11 +1,7 @@
 package com.vadim.mytask.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import com.vadim.mytask.dto.Task
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
@@ -32,6 +28,19 @@ data class TaskEntity(
     @Column(name = "status_id")
     var statusId: Int? = null,
 
-    @Column(name = "priority_id")
-    var priorityId: Int? = null
-)
+    @ManyToOne
+    @JoinColumn(name = "priority_id")
+    var priority: PriorityEntity
+) {
+    fun toDto(): Task = Task(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        dueDate = this.dueDate,
+        createdDate = this.createdDate,
+        updatedDate = this.updatedDate,
+        deletedDate = this.deletedDate,
+        statusId = this.statusId,
+        priority = this.priority.toDto()
+    )
+}
