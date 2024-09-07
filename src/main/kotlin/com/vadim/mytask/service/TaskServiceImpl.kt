@@ -19,7 +19,16 @@ class TaskServiceImpl(
 
     @Transactional
     override fun update(id: Int, task: Task) {
-        TODO("Not yet implemented")
+        val updatedTask = taskRepository.findByIdOrNull(id = id) ?: throw RuntimeException("task not found")
+
+        updatedTask.title = task.title
+        updatedTask.description = task.description
+        updatedTask.dueDate = task.dueDate
+        updatedTask.createdDate = task.createdDate
+        updatedTask.updatedDate = task.updatedDate
+        updatedTask.deletedDate = task.deletedDate
+
+        taskRepository.save(updatedTask)
     }
 
     override fun getById(id: Int): Task =
@@ -41,4 +50,16 @@ class TaskServiceImpl(
         priorityId = this.priorityId
     )
 
+
+    private fun TaskEntity.toDto(): Task = Task(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        dueDate = this.dueDate,
+        createdDate = this.createdDate,
+        updatedDate = this.updatedDate,
+        deletedDate = this.deletedDate,
+        statusId = this.statusId,
+        priorityId = this.priorityId
+    )
 }

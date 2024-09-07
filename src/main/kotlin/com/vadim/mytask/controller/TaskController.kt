@@ -5,6 +5,7 @@ import com.vadim.mytask.service.TaskService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -19,4 +20,7 @@ class TaskController(
 
     @PostMapping
     fun create(@RequestBody task: Task): Int = taskService.create(task)
+
+    @PutMapping("/{id}")
+    fun update(@PathVariable id: Int, @RequestBody task: Task) = taskService.update(id, task)
 }
