@@ -21,7 +21,9 @@ class TagServiceImpl(
     }
 
     override fun update(id: Int, tag: Tag) {
-        TODO("Not yet implemented")
+        val updatedTag = tagRepository.findByIdOrNull(id = id) ?: throw RuntimeException("tag not found")
+        updatedTag.name = tag.name
+        tagRepository.save(updatedTag)
     }
 
     override fun delete(id: Int) {
