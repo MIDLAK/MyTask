@@ -8,5 +8,5 @@ class PriorityEntity (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
     var name: String = "",
-    var plevel: Int = 0
+    var plevel: Int? = null
 )
