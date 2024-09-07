@@ -22,9 +22,9 @@ class TagController(
     @PostMapping
     fun create(@RequestBody tag: Tag): Int = tagService.create(tag = tag)
 
-    @PutMapping
+    @PutMapping("/{id}")
     fun update(@PathVariable("id") id: Int, @RequestBody tag: Tag) = tagService.update(id = id, tag = tag)
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     fun delete(@PathVariable("id") id: Int) = tagService.delete(id = id)
 }
