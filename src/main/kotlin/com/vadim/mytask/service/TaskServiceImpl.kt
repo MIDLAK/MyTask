@@ -34,8 +34,10 @@ class TaskServiceImpl(
     override fun getById(id: Int): Task =
         taskRepository.findByIdOrNull(id)?.toDto() ?: throw RuntimeException("task not found")
 
+    @Transactional
     override fun delete(id: Int) {
-        TODO("Not yet implemented")
+        val deletingTask = taskRepository.findByIdOrNull(id) ?: throw RuntimeException("task not found")
+        taskRepository.deleteById(deletingTask.id)
     }
 
     private fun Task.toEntity(): TaskEntity = TaskEntity(

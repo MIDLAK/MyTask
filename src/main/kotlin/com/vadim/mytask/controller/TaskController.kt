@@ -2,6 +2,7 @@ package com.vadim.mytask.controller
 
 import com.vadim.mytask.dto.Task
 import com.vadim.mytask.service.TaskService
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -23,4 +24,7 @@ class TaskController(
 
     @PutMapping("/{id}")
     fun update(@PathVariable id: Int, @RequestBody task: Task) = taskService.update(id, task)
+
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Int) = taskService.delete(id)
 }
