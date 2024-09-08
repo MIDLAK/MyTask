@@ -41,4 +41,13 @@ class TagServiceImpl(
         val deletedTag = tagRepository.findByIdOrNull(id = id) ?: throw TagNotFoundException(id)
         tagRepository.deleteById(deletedTag.id)
     }
+
+    override fun getUsed(): List<String> {
+        val tags = tagRepository.findAllTagsWithLinkTask().map { it.toDto() }
+        val tagsNames: MutableList<String> = mutableListOf()
+        for (tag: Tag in tags) {
+            tagsNames.add(tag.name)
+        }
+        return tagsNames
+    }
 }

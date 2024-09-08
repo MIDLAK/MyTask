@@ -21,6 +21,9 @@ class TagController(
     fun getById(@PathVariable("id") id: Int,
                 @RequestParam("sort", defaultValue = "asc") sortStr: String): Tag = tagService.getById(id = id, sort = sortStr)
 
+    @GetMapping("/get-used")
+    fun getUsedTags(): List<String> = tagService.getUsed()
+
     @PostMapping
     fun create(@RequestBody tag: Tag): Int = tagService.create(tag = tag)
 
