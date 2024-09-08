@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -17,7 +18,8 @@ class TagController(
     private val tagService: TagService
 ) {
     @GetMapping("/{id}")
-    fun getById(@PathVariable("id") id: Int): Tag = tagService.getById(id = id)
+    fun getById(@PathVariable("id") id: Int,
+                @RequestParam("sort", defaultValue = "asc") sortStr: String): Tag = tagService.getById(id = id, sort = sortStr)
 
     @PostMapping
     fun create(@RequestBody tag: Tag): Int = tagService.create(tag = tag)
