@@ -8,7 +8,7 @@ data class Tag(
     var tasks: List<Task>? = null
 ) {
     fun toEntity(): TagEntity = TagEntity(
-        id = 0,
+        id = this.id ?: 0,
         name = this.name,
         tasks = this.tasks?.map { it.toEntity() }
     )

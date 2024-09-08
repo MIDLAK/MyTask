@@ -9,6 +9,7 @@ import java.time.LocalDateTime
 data class TaskEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "task_id")
     val id: Int = 0,
     var title: String = "",
     var description: String? = "",

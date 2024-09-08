@@ -8,6 +8,7 @@ import jakarta.persistence.*
 data class TagEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "tag_id")
     val id: Int = 0,
     var name: String = "",
 

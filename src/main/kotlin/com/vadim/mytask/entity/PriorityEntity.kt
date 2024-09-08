@@ -6,7 +6,9 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "priority")
 class PriorityEntity (
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "priority_id")
     var id: Int = 0,
     val name: String = "",
     val plevel: Int? = null

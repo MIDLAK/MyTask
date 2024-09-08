@@ -5,13 +5,15 @@ import com.vadim.mytask.dto.Task
 import com.vadim.mytask.entity.TagEntity
 import com.vadim.mytask.exception.TagNotFoundException
 import com.vadim.mytask.repository.TagRepository
+import com.vadim.mytask.repository.TaskRepository
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class TagServiceImpl(
-    private val tagRepository: TagRepository
+    private val tagRepository: TagRepository,
+    private val taskRepository: TaskRepository
 ): TagService {
     override fun getById(id: Int, sort: String): Tag {
         val tag = tagRepository.findByIdOrNull(id)?.toDto() ?: throw TagNotFoundException(id)
@@ -39,6 +41,8 @@ class TagServiceImpl(
     @Transactional
     override fun delete(id: Int) {
         val deletedTag = tagRepository.findByIdOrNull(id = id) ?: throw TagNotFoundException(id)
+        val tasksUsedThisTag = getById(deletedTag.id, "") // удаление связанных задач
+        tasksUsedThisTag.tasks?.forEach { it -> taskRepository.deleteById(it.toEntity().id) }
         tagRepository.deleteById(deletedTag.id)
     }
 

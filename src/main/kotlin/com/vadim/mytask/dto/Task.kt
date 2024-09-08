@@ -19,7 +19,7 @@ data class Task(
     val priority: Priority
 ) {
     fun toEntity(): TaskEntity = TaskEntity(
-        id = 0,
+        id = this.id ?: 0,
         title = this.title,
         description = this.description,
         dueDate = this.dueDate,
