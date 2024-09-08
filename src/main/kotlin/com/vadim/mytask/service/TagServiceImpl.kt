@@ -42,12 +42,11 @@ class TagServiceImpl(
         tagRepository.deleteById(deletedTag.id)
     }
 
-    override fun getUsed(): List<String> {
+    override fun getUsed(): List<Tag> {
         val tags = tagRepository.findAllTagsWithLinkTask().map { it.toDto() }
-        val tagsNames: MutableList<String> = mutableListOf()
         for (tag: Tag in tags) {
-            tagsNames.add(tag.name)
+            tag.tasks = null
         }
-        return tagsNames
+        return tags
     }
 }

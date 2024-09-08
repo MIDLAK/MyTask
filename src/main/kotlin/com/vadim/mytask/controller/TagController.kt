@@ -22,7 +22,7 @@ class TagController(
                 @RequestParam("sort", defaultValue = "asc") sortStr: String): Tag = tagService.getById(id = id, sort = sortStr)
 
     @GetMapping("/get-used")
-    fun getUsedTags(): List<String> = tagService.getUsed()
+    fun getUsedTags(): List<Tag> = tagService.getUsed()
 
     @PostMapping
     fun create(@RequestBody tag: Tag): Int = tagService.create(tag = tag)
