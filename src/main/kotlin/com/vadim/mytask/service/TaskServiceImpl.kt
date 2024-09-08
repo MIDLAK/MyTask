@@ -7,6 +7,7 @@ import com.vadim.mytask.exception.TaskNotFoundException
 import com.vadim.mytask.repository.PriorityRepository
 import com.vadim.mytask.repository.TaskRepository
 import jakarta.transaction.Transactional
+import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -53,10 +54,10 @@ class TaskServiceImpl(
         taskRepository.deleteById(deletingTask.id)
     }
 
-    override fun getByDueDate(dueDate: LocalDate): List<Task> {
+    override fun getByDueDate(dueDate: LocalDate, sort: Sort): List<Task> {
         val startOfDay = dueDate.atStartOfDay()
         val endOfDay = dueDate.atTime(LocalTime.MAX)
-        return taskRepository.findByDueDateBetween(startOfDay, endOfDay).map { it.toDto() }
+        return taskRepository.findByDueDateBetween(startOfDay, endOfDay, sort).map { it.toDto() }
     }
 
 }
