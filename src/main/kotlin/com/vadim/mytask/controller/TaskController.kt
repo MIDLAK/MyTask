@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/task")
@@ -18,6 +21,12 @@ class TaskController(
 ) {
     @GetMapping("/{id}")
     fun getById(@PathVariable("id") id: Int): Task = taskService.getById(id);
+
+    @GetMapping("/by-date")
+    fun getByDueDate(@RequestParam("dueDate") isoDate: String): List<Task> {
+        val dueDay = LocalDate.parse(isoDate)
+        return taskService.getByDueDate(dueDay)
+    }
 
     @PostMapping
     fun create(@RequestBody task: Task): Int = taskService.create(task)
