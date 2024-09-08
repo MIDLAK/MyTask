@@ -25,13 +25,15 @@ class TaskController(
 
     @GetMapping("/by-date")
     fun getByDueDate(@RequestParam("dueDate") isoDate: String,
-                     @RequestParam("sort", defaultValue = "asc") sortStr: String): List<Task> {
+                     @RequestParam("sort", defaultValue = "asc") sortStr: String,
+                     @RequestParam("page", defaultValue = "0") page: Int): List<Task> {
         val sort = when(sortStr) {
             "desc" -> Sort.by(Sort.Order.desc("priority.plevel"))
             else -> Sort.by(Sort.Order.asc("priority.plevel"))
         }
         val dueDay = LocalDate.parse(isoDate)
-        return taskService.getByDueDate(dueDay, sort)
+        val pageSize = 1
+        return taskService.getByDueDate(page, dueDay, sort, pageSize)
     }
 
     @PostMapping

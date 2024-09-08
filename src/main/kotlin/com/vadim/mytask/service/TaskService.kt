@@ -10,5 +10,5 @@ interface TaskService {
     fun create(task: Task): Int
     fun update(id: Int, task: Task)
     fun delete(id: Int)
-    fun getByDueDate(dueDate: LocalDate, sort: Sort): List<Task>
+    fun getByDueDate(page: Int, dueDate: LocalDate, sort: Sort, pageSize: Int): List<Task>
 }
