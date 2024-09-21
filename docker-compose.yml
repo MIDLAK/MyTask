@@ -1,0 +1,38 @@
+# нужно запустить docker-compose up дважды из-за того, что БД заполняется тестовыми данными
+
+version: '3.9'
+
+services:
+  app:
+    image: 'mytask-0.1.1'
+    ports:
+      - "8080:8080" # хост:контейнер
+    build:
+      context: .
+    container_name: mytask
+    depends_on:
+      - postgres
+    environment:
+      MYTASK_PSQL_USERNAME_DKR:  ${MYTASK_PSQL_USERNAME}
+      MYTASK_PSQL_PASSWORD_DKR: ${MYTASK_PSQL_PASSWORD}
+      MYTASK_CERT_PASSWORD_DKR: ${MYTASK_CERT_PASSWORD}
+      MYTASK_DB_HOST_DKR: "postgres"
+      MYTASK_DB_PORT_DKR: "5432"
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: "taskmngmntdb"
+      POSTGRES_USER: "dev"
+      POSTGRES_PASSWORD: "ps123"
+      POSTGRES_ROOT_PASSWORD: "ps123"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./docker-entrypoint-initdb.d/gen.sql:/docker-entrypoint-initdb.d/gen.sql
+      - taskmngmnt-data:/var/lib/postgresql/data
+    ports:
+      - 5435:5432
+    expose:
+      - "5435"
+volumes:
+  taskmngmnt-data:
